@@ -35,6 +35,7 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button5 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -100,6 +101,16 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(268, 12);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(73, 33);
+            this.button5.TabIndex = 0;
+            this.button5.Text = "调试";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -107,6 +118,7 @@
             this.ClientSize = new System.Drawing.Size(1060, 594);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -129,6 +141,7 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button button5;
     }
 }
 

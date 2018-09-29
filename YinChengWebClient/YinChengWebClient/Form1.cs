@@ -70,5 +70,11 @@ namespace YinChengWebClient
 
             chromiumWebBrowser.Load("http://yc.yixueks.com:8080/medicalWeb/login"); 
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            //调试
+            chromiumWebBrowser.GetBrowser().ShowDevTools();
+        }
     }
 }
