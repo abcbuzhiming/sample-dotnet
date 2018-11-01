@@ -30,6 +30,9 @@ namespace YinChengWebClient
             //settings.CefCommandLineArgs.Add("ppapi-flash-version", "21.0.0.213");//PepperFlash\manifest.json中的version
             settings.CefCommandLineArgs.Add("ppapi-flash-path", @"plugins\pepflashplayer.dll");     //注意插件必须和cef的版本x86和x64对应的，版本不对，无法加载,并且这个插件挑系统，系统版本低就必须找低版本的插件
             settings.CefCommandLineArgs.Add("plugin-polic", "allow");       //直接允许插件
+			//安全证书
+            settings.CefCommandLineArgs.Add("--ignore-urlfetcher-cert-requests", "1");
+            settings.CefCommandLineArgs.Add("--ignore-certificate-errors", "1");
             //初始化
             Cef.Initialize(settings);
             //新建浏览器组件
