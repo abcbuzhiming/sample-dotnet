@@ -22,7 +22,7 @@ namespace SeleniumSpider
             string driverDirectory = @"E:\selenium";
 
             ChromeOptions chromeOptions = new ChromeOptions();
-            chromeOptions.BinaryLocation = @"C:\Program Files(x86)\Google\Chrome\Application\chrome.exe";       //设置chrome浏览器二进制程序路径位置
+            //chromeOptions.BinaryLocation = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";       //设置chrome浏览器二进制程序路径位置（安装版不需要）
             //chromeOptions.AddArguments("--headless");       //设置为 headless 模式 （必须）
             chromeOptions.AddArguments("--window-size=1920,1080");      //设置浏览器窗口打开大小  （非必须）
 
@@ -40,8 +40,12 @@ namespace SeleniumSpider
             chromeOptions.AddArguments("--proxy-server=socks5://127.0.0.1:7070");   //socket协议代理
             chromeOptions.AddArgument("ignore-certificate-errors");       //不检测证书错误
 
-            using (IWebDriver driver = new ChromeDriver(driverDirectory, chromeOptions))       //用using保证资源能够被释放
+            ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService(driverDirectory);
+            chromeDriverService.HideCommandPromptWindow = true;     //关掉driver的命令行窗口
+
+            using (IWebDriver driver = new ChromeDriver(chromeDriverService, chromeOptions))       //用using保证资源能够被释放
             {
+
                 //driver.Navigate().GoToUrl("http://www.imooc.com/");
                 /*
                 driver.Navigate().GoToUrl("http://www.ggzy.gov.cn/information/html/a/640000/0202/201807/27/0064cfa31828b76e44b5adbcb73acbd20f09.shtml");
