@@ -22,6 +22,7 @@ namespace SeleniumSpider
             string driverDirectory = @"E:\selenium";
 
             ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.BinaryLocation = @"C:\Program Files(x86)\Google\Chrome\Application\chrome.exe";       //设置chrome浏览器二进制程序路径位置
             //chromeOptions.AddArguments("--headless");       //设置为 headless 模式 （必须）
             chromeOptions.AddArguments("--window-size=1920,1080");      //设置浏览器窗口打开大小  （非必须）
 
