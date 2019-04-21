@@ -1,7 +1,7 @@
 # 基于.Net Core和Visual Studio建立的Asp.Net项目模板
 
 # 版本
-基于.net core 2.1
+基于.net core 2.x
 
 ## 资源占用
 .net core在linux下的内存占用，启动时大约50M左右。访问一次后升高到70M左右
