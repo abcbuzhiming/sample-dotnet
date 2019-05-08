@@ -17,6 +17,11 @@ namespace SampleAspNetCore.Controllers
             return "sample hello";
         }
 
+        public IActionResult helloJson(){
+            Dictionary<string,string> dictionary = new Dictionary<string,string>();
+            dictionary.Add("key1","value1");
+            return Json(dictionary);
+        }
         /*
         跳转范例
          */
