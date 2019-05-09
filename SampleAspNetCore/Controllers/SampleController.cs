@@ -28,6 +28,12 @@ namespace SampleAspNetCore.Controllers
         public IActionResult redirect(){
             return this.Redirect("/sample/hello");
         }
+
+        public string error(){
+            int a = 0;
+            int b = 1/a;
+            return "sample error";
+        }
     }
 
     
