@@ -21,7 +21,7 @@ namespace SampleBackgroundTasksInWebHost.Services {
             _logger.LogInformation ("Queued Hosted Service is starting.");
 
             while (!cancellationToken.IsCancellationRequested) {
-                var workItem = await TaskQueue.DequeueAsync (cancellationToken);
+                var workItem = await TaskQueue.DequeueAsync (cancellationToken);        //阻塞直到获取一个任务委托
 
                 try {
                     await workItem (cancellationToken);

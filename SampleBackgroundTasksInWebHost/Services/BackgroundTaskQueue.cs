@@ -23,7 +23,7 @@ namespace SampleBackgroundTasksInWebHost.Services {
             }
 
             _workItemsQueue.Enqueue (workItem); //加入队列
-            _signal.Release ();     //释放
+            _signal.Release ();     //释放1个线程，即可进入
         }
 
         public async Task<Func<CancellationToken, Task>> DequeueAsync (CancellationToken cancellationToken) {
