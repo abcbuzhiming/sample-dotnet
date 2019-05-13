@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace SampleBackgroundTasksInWebHost.Services {
     public interface IBackgroundTaskQueue {
+        //入队
         void QueueBackgroundWorkItem (Func<CancellationToken, Task> workItem);
 
-        Task<Func<CancellationToken, Task>> DequeueAsync (
-            CancellationToken cancellationToken);
+        //出队
+        Task<Func<CancellationToken, Task>> DequeueAsync (CancellationToken cancellationToken);
     }
 
     public class BackgroundTaskQueue : IBackgroundTaskQueue {
@@ -21,13 +22,13 @@ namespace SampleBackgroundTasksInWebHost.Services {
                 throw new ArgumentNullException (nameof (workItem));
             }
 
-            _workItemsQueue.Enqueue (workItem); //添加元素
-            _signal.Release ();
+            _workItemsQueue.Enqueue (workItem); //加入队列
+            _signal.Release ();     //释放
         }
 
         public async Task<Func<CancellationToken, Task>> DequeueAsync (CancellationToken cancellationToken) {
-            await _signal.WaitAsync (cancellationToken);
-            _workItemsQueue.TryDequeue (out var workItem);
+            await _signal.WaitAsync (cancellationToken);        //异步等待信号量，同时观察cancellationToken
+            _workItemsQueue.TryDequeue (out var workItem);      //出队列
 
             return workItem;
         }

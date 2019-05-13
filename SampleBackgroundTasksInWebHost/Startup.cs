@@ -58,7 +58,11 @@ namespace SampleBackgroundTasksInWebHost
             }
 
             //app.UseHttpsRedirection();        //跳转https
-            app.UseMvc();
+            app.UseMvc(routes => {
+                routes.MapRoute (
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/"); //默认页处理器
+            });
         }
     }
 }
