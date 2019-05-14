@@ -10,8 +10,10 @@ using Microsoft.AspNetCore.Mvc;
  */
 namespace SampleAspNetCore.Controllers
 {
+    [Route("sample")]
     public class SampleController: Controller
     {
+        [Route("hello")]
         public string hello(){
             return "sample hello";
         }

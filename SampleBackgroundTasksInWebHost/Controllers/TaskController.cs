@@ -3,52 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using SampleBackgroundTasksInWebHost.Services;
+using System.Threading;
 
 namespace SampleBackgroundTasksInWebHost.Controllers
 {
-    //[Route("task")]
-    public class TaskController: Controller
+    [Route("task")]
+    public class TaskController : Controller
     {
-        //[Route("addtask")]
-        public string addTask(){
-            /*
-            Queue.QueueBackgroundWorkItem(async token =>
+        private readonly ILogger _logger;
+
+        //队列
+        public IBackgroundTaskQueue Queue { get; }
+
+        public TaskController(ILogger<TaskController> logger, IBackgroundTaskQueue queue)
+        {
+            _logger = logger;
+            Queue = queue;
+        }
+
+        [Route("addtask")]
+        public string addTask()
+        {
+            
+            Queue.QueueBackgroundWorkItem(async cancellationToken =>
             {
                 var guid = Guid.NewGuid().ToString();
 
-                using (var scope = _serviceScopeFactory.CreateScope())
-                {
-                    var scopedServices = scope.ServiceProvider;
-                    var db = scopedServices.GetRequiredService<AppDbContext>();
+                await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);       //异步延迟5秒
 
-                    for (int delayLoop = 1; delayLoop < 4; delayLoop++)
-                    {
-                        try
-                        {
-                            db.Messages.Add(
-                                new Message() 
-                                { 
-                                    Text = $"Queued Background Task {guid} has " +
-                                        $"written a step. {delayLoop}/3"
-                                });
-                            await db.SaveChangesAsync();
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.LogError(ex, 
-                                "An error occurred writing to the " +
-                                $"database. Error: {ex.Message}");
-                        }
-
-                        await Task.Delay(TimeSpan.FromSeconds(5), token);
-                    }
-                }
-
-                _logger.LogInformation(
-                    $"Queued Background Task {guid} is complete. 3/3");
+                _logger.LogInformation($"Queued Background Task {guid} is complete." + DateTime.Now.ToString());
             });
-             */
-            return "add success";
+
+            return "add task success";
         }
     }
 }

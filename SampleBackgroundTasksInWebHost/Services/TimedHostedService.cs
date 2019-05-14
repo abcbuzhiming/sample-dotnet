@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace SampleBackgroundTasksInWebHost.Services
 {
+    //后台服务，定时执行
     public class TimedHostedService: IHostedService, IDisposable
     {
         private readonly ILogger _logger;

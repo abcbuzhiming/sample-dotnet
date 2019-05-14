@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace SampleBackgroundTasksInWebHost.Services {
+    //带有作用域的后台服务
     public class ConsumeScopedServiceHostedService : IHostedService {
         private readonly ILogger _logger;
 
