@@ -73,7 +73,7 @@ namespace SampleAspNetCoreAuth
                 options.Cookie.HttpOnly = true;         //cookie是否httpOnly
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);       //超时时间
                 options.Cookie.Name = "NCOOKIE";        //cookie名称
-                options.LoginPath = "/user/login";        //登入url
+                options.LoginPath = "/user/login";        //登入url页
                 options.LogoutPath = "/user/dologout";      //登出url
                 options.AccessDeniedPath = "/user/accessdeny";        //拒绝地址
                 options.SlidingExpiration = true;       //指示处理程序在处理到期时间超过到期时间的请求时，重新发出具有新到期时间的新cookie。

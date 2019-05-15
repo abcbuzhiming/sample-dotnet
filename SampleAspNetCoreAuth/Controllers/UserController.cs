@@ -13,20 +13,21 @@ namespace SampleAspNetCoreAuth.Controllers
     [Route("[controller]/[action]")]
     public class UserController
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger _logger;
 
-
-        public UserController(UserManager<ApplicationUser> userManager,
+        
+        public UserController(
           SignInManager<ApplicationUser> signInManager,
           ILogger<UserController> logger)
         {
-            _userManager = userManager;
+            //_userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
 
         }
+        
         //登入页面
         public string login()
         {
@@ -35,10 +36,32 @@ namespace SampleAspNetCoreAuth.Controllers
         }
 
         //登入处理
-        public string doLogin()
+        public async Task<string> doLogin()
         {
-
-            return "doLogin";
+            /*
+            var result = await _signInManager.PasswordSignInAsync("xiawei", 
+            "123456", true, lockoutOnFailure: true);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("User logged in.");
+                return "login success";
+            }
+            else if (result.RequiresTwoFactor)
+            {
+                return " user attempting to sign-in requires two factor authentication";
+            }
+            else if (result.IsLockedOut)
+            {
+                _logger.LogWarning("User account locked out.");
+                return "User account locked out.";
+            }
+            else
+            {
+                _logger.LogWarning("Invalid login attempt");
+                return "Invalid login attempt";
+            }
+             */
+            return "user doLogin";
         }
 
 
