@@ -41,7 +41,8 @@ namespace SampleAspNetCoreAuth
             });
 
             //向应用程序添加一组通用身份服务，包括默认UI，令牌提供程序，以及配置身份验证以使用身份Cookie
-            services.AddDefaultIdentity<IdentityUser>();
+            //services.AddDefaultIdentity<IdentityUser>();
+            services.AddIdentity<IdentityUser, IdentityRole>();
             
             services.Configure<IdentityOptions>(options =>
             {
@@ -63,16 +64,21 @@ namespace SampleAspNetCoreAuth
                 options.User.RequireUniqueEmail = false;        //指示应用程序是否需要为其用户提供唯一的电子邮件。 默认为false
             });
 
+
+            //注意，这个配置在使用services.AddDefaultIdentity的时候是无效的
+             
             services.ConfigureApplicationCookie(options =>
             {
                 // Cookie settings
                 options.Cookie.HttpOnly = true;         //cookie是否httpOnly
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);       //超时时间
-
-                options.LoginPath = "/Identity/Account/Login";
-                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-                options.SlidingExpiration = true;
+                options.Cookie.Name = "NCOOKIE";        //cookie名称
+                options.LoginPath = "/user/login";        //登入url
+                options.LogoutPath = "/user/dologout";      //登出url
+                options.AccessDeniedPath = "/user/accessdeny";        //拒绝地址
+                options.SlidingExpiration = true;       //指示处理程序在处理到期时间超过到期时间的请求时，重新发出具有新到期时间的新cookie。
             });
+            
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
