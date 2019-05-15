@@ -13,16 +13,16 @@ namespace SampleAspNetCoreAuth.Controllers
     [Route("[controller]/[action]")]
     public class UserController
     {
-        //private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger _logger;
 
         
-        public UserController(
+        public UserController(UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
           ILogger<UserController> logger)
         {
-            //_userManager = userManager;
+            _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
 
