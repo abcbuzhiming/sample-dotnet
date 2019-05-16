@@ -30,6 +30,8 @@ namespace SampleBackgroundTasksInWebHost.Services
 
             _workItemsQueue.Enqueue(workItem); //加入队列
             _signal.Release();     //释放1个线程，即可进行处理
+            //Console.WriteLine("当前可进入的线程数：" + _signal.CurrentCount);
+            
         }
 
         public async Task<Func<CancellationToken, Task>> DequeueAsync(CancellationToken cancellationToken)

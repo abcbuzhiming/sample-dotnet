@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Identity.UI;
 namespace SampleAspNetCoreAuth
 {
     //项目的配置类，项目的主要配置信息都在这个类里，它被Program.cs载入
-    //本配置类的作用是实现基于Identity的基本认证和授权，为了简化，没有引入数据库部分
+    //本配置类的作用是实现基于Entity FrameWork Core 数据层的基本认证和授权，暂未完成
     //参考  https://docs.microsoft.com/zh-cn/aspnet/core/security/authentication/identity
     public class Startup
     {
@@ -43,6 +43,7 @@ namespace SampleAspNetCoreAuth
             //向应用程序添加一组通用身份服务，包括默认UI，令牌提供程序，以及配置身份验证以使用身份Cookie
             //services.AddDefaultIdentity<IdentityUser>();
             services.AddIdentity<IdentityUser, IdentityRole>();
+                //.AddEntityFrameworkStores<ApplicationDbContext>()
             
             services.Configure<IdentityOptions>(options =>
             {

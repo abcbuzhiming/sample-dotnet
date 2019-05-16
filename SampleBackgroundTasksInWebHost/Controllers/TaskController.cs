@@ -26,13 +26,12 @@ namespace SampleBackgroundTasksInWebHost.Controllers
         [Route("addtask")]
         public string addTask()
         {
-            
+            _logger.LogInformation("add task:" + DateTime.Now.ToString());
             Queue.QueueBackgroundWorkItem(async cancellationToken =>
             {
                 var guid = Guid.NewGuid().ToString();
-
+                _logger.LogInformation($"Queued Background Task {guid} is start." + DateTime.Now.ToString());
                 await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);       //异步延迟5秒
-
                 _logger.LogInformation($"Queued Background Task {guid} is complete." + DateTime.Now.ToString());
             });
 

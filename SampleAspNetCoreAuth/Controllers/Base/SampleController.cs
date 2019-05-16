@@ -9,7 +9,7 @@ namespace SampleAspNetCoreAuth.Controllers
 {
     //如果[Authorize]挂在类层次，你需要用[AllowAnonymous]来让不需要认证的的方法通过
     [Authorize]
-    [Route("[controller]/[action]")]
+    [Route("base/[controller]/[action]")]
     public class SampleController
     {
         

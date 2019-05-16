@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace SampleAspNetCoreAuth.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("base/[controller]/[action]")]
     public class UserController
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -38,7 +38,7 @@ namespace SampleAspNetCoreAuth.Controllers
         //登入处理
         public async Task<string> doLogin()
         {
-            /*
+            
             var result = await _signInManager.PasswordSignInAsync("xiawei", 
             "123456", true, lockoutOnFailure: true);
             if (result.Succeeded)
@@ -60,8 +60,8 @@ namespace SampleAspNetCoreAuth.Controllers
                 _logger.LogWarning("Invalid login attempt");
                 return "Invalid login attempt";
             }
-             */
-            return "user doLogin";
+            
+            //return "user doLogin";
         }
 
 

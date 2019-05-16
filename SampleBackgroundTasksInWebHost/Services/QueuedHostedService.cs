@@ -27,8 +27,9 @@ namespace SampleBackgroundTasksInWebHost.Services
 
             while (!cancellationToken.IsCancellationRequested)
             {
+                //Console.WriteLine(Thread.CurrentThread.ManagedThreadId + " 等待获取任务");
                 var workItem = await TaskQueue.DequeueAsync(cancellationToken); //阻塞直到获取一个任务委托
-
+                //Console.WriteLine(Thread.CurrentThread.ManagedThreadId + " 成功获取任务");
                 try
                 {
                     await workItem(cancellationToken);
