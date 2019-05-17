@@ -48,6 +48,9 @@ namespace SampleAspNetCoreAuth
                 options.Cookie.HttpOnly = true;         //cookie是否httpOnly
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);       //超时时间
                 options.Cookie.Name = "NCOOKIE";        //cookie名称
+                options.LoginPath = "/cookie/user/login";        //登入url页
+                options.LogoutPath = "/user/dologout";      //登出url
+                options.AccessDeniedPath = "/user/accessdeny";        //拒绝地址
             });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();     //HttpContext中间件
