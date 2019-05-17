@@ -24,6 +24,7 @@ namespace SampleAspNetCoreAuth
     // 参考: 
     //ASP.NET Core 认证与授权[2]:Cookie认证 https://www.cnblogs.com/RainingNight/p/cookie-authentication-in-asp-net-core.html
     //https://github.com/RainingNight/AspNetCoreSample/tree/master/src/Functional/Authentication/CookieSample
+    //使用 cookie 而无需 ASP.NET Core 标识的身份验证 https://docs.microsoft.com/zh-cn/aspnet/core/security/authentication/cookie
     public class StartupCookie
     {
         public StartupCookie(IConfiguration configuration)
@@ -49,6 +50,7 @@ namespace SampleAspNetCoreAuth
                 options.Cookie.Name = "NCOOKIE";        //cookie名称
             });
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();     //HttpContext中间件
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -67,7 +69,7 @@ namespace SampleAspNetCoreAuth
             }
 
             //app.UseHttpsRedirection();      //强制https跳转
-            //app.UseCookiePolicy();
+            app.UseCookiePolicy();          //Cookie 策略中间件
 
             app.UseAuthentication();        //添加了身份验证中间件到请求管道
             app.UseMvc();

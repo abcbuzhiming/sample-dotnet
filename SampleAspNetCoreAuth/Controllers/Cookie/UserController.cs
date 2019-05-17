@@ -11,31 +11,54 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
-
+using Microsoft.AspNetCore.Http;
 
 namespace SampleAspNetCoreAuth.Controllers.Cookie
 {
     [Route("cookie/[controller]/[action]")]
-    public class UserController
+    public class UserController:Controller
     {
-        
+        private IHttpContextAccessor _accessor;
+        public UserController(IHttpContextAccessor accessor)
+        {
+            _accessor = accessor;
+        }
+
         public string login()
         {
             return "cookie login page";
         }
 
-        public string doLogin(){
+        public async Task<string> doLogin(){
 
+            string username = "admin";
             //claim，在asp.net core体系里称为声明
             //1.0版本
-            var claimIdentity = new ClaimsIdentity("Cookie");
-            return "cookie doLogin";
+            var claimIdentity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);       //表示基于声明的身份,使用的身份验证类型是cookie
+            claimIdentity.AddClaim(new Claim(ClaimTypes.Name, username));
+            
+
+            var claimsPrincipal = new ClaimsPrincipal(claimIdentity);   
+            
+            HttpContext httpContext = _accessor.HttpContext;
+            await httpContext.SignInAsync(claimsPrincipal);     //登录
+            
+            
+
+            return "cookie doLogin success";
         }
 
-        public string doLogout()
+        public async Task<string> doLogout()
         {
+            HttpContext httpContext = _accessor.HttpContext;
+            await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);      //登出
+            return "cookie doLogout success";
+        }
 
-            return "cookie doLogout";
+        [Authorize]
+        public string authz()
+        {
+            return "cookie user authz";
         }
     }
 }

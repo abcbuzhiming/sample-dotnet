@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 namespace SampleAspNetCoreAuth.Controllers
 {
     [Route("base/[controller]/[action]")]
-    public class UserController
+    public class UserController:Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
