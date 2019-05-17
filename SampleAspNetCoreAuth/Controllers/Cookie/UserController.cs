@@ -18,25 +18,30 @@ namespace SampleAspNetCoreAuth.Controllers.Cookie
     [Route("cookie/[controller]/[action]")]
     public class UserController:Controller
     {
+        //中间件HttpContext获取
         private IHttpContextAccessor _accessor;
         public UserController(IHttpContextAccessor accessor)
         {
             _accessor = accessor;
         }
 
+        //登录页
         public string login()
         {
             return "cookie login page";
         }
 
+        //登录过程
         public async Task<string> doLogin(){
-
+            
+            //这里要进行数据库查找用户等操作
             string username = "admin";
             //claim，在asp.net core体系里称为声明
             //1.0版本
             var claimIdentity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);       //表示基于声明的身份,使用的身份验证类型是cookie
             claimIdentity.AddClaim(new Claim(ClaimTypes.Name, username));
-            
+            claimIdentity.AddClaim(new Claim(ClaimTypes.Role,"admin"));     //角色
+                       
 
             var claimsPrincipal = new ClaimsPrincipal(claimIdentity);   
             
@@ -48,6 +53,7 @@ namespace SampleAspNetCoreAuth.Controllers.Cookie
             return "cookie doLogin success";
         }
 
+        //登出
         public async Task<string> doLogout()
         {
             HttpContext httpContext = _accessor.HttpContext;
@@ -55,10 +61,25 @@ namespace SampleAspNetCoreAuth.Controllers.Cookie
             return "cookie doLogout success";
         }
 
+        //注解，判断是否登录过
         [Authorize]
         public string authz()
         {
             return "cookie user authz";
+        }
+
+        //基于角色的授权，注意，区分大小写
+        [Authorize(Roles = "admin")]
+        public string admin()
+        {
+            return "cookie user admin";
+        }
+
+        //获取用户基本信息（如果cookie过期，得到的就是null）
+        public string getUserInfo(){
+             HttpContext httpContext = _accessor.HttpContext;
+             var username = httpContext.User.Identity.Name;
+            return "cookie getUserInfo:" + username;
         }
     }
 }
