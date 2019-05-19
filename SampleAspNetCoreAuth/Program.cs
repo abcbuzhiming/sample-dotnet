@@ -18,6 +18,8 @@ namespace SampleAspNetCoreAuth
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args).UseStartup<StartupCookie>();
+            //WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();     //Base
+            WebHost.CreateDefaultBuilder(args).UseStartup<StartupCookie>();       //基于cookie的认证配置
+            //WebHost.CreateDefaultBuilder(args).UseStartup<StartupJwt>();        //基于JWT on Http Header的认证配置
     }
 }

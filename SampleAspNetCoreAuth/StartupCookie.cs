@@ -16,6 +16,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using System.Net;
 
 namespace SampleAspNetCoreAuth
 {
@@ -44,6 +45,19 @@ namespace SampleAspNetCoreAuth
             })
             .AddCookie(options =>
             {
+                options.Events = new CookieAuthenticationEvents()
+                {
+                    OnRedirectToLogin = context =>
+                    {
+                        context.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                        // added for .NET Core 1.0.1 and above (thanks to @Sean for the update)
+                        context.Response.WriteAsync("{\"error\": " + context.Response.StatusCode + "}");
+                        
+                        //context.Response.Redirect(context.RedirectUri);       跳转的写法
+                        return Task.CompletedTask;
+                    }
+                };
+
                 // 在这里可以根据需要添加一些Cookie认证相关的配置，在本次示例中使用默认值就可以了。
                 options.Cookie.HttpOnly = true;         //cookie是否httpOnly
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);       //超时时间
