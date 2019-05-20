@@ -72,7 +72,7 @@ namespace SampleAspNetCoreAuth
                     ValidIssuer = "http://localhost:5200",      //Token颁发机构
                     ValidAudience = "api",                      //颁发给谁
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Consts.Secret)),     //签名秘钥
-
+                    
                     /***********************************TokenValidationParameters的参数默认值***********************************/
                     // RequireSignedTokens = true,
                     // SaveSigninToken = false,
