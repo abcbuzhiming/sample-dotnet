@@ -6,12 +6,12 @@ using SqlSugar;
 namespace SampleSqlSugar.Entity
 {
     ///<summary>
-    ///用户信息
+    ///管理员信息
     ///</summary>
-    [SugarTable("user_info")]
-    public partial class UserInfo
+    [SugarTable("manager_info")]
+    public partial class ManagerInfo
     {
-           public UserInfo(){
+           public ManagerInfo(){
 
 
            }
@@ -47,26 +47,11 @@ namespace SampleSqlSugar.Entity
            public int id {get;set;}
 
            /// <summary>
-           /// Desc:mac地址
-           /// Default:
-           /// Nullable:False
-           /// </summary>           
-           [SugarColumn(ColumnName="mac_address")]
-           public string macAddress {get;set;}
-
-           /// <summary>
            /// Desc:名称
            /// Default:
            /// Nullable:False
            /// </summary>           
            public string name {get;set;}
-
-           /// <summary>
-           /// Desc:received signal strength indication
-           /// Default:
-           /// Nullable:False
-           /// </summary>           
-           public int rssi {get;set;}
 
            /// <summary>
            /// Desc:更新时间

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Text.RegularExpressions;
+using System.Linq;
 using System.IO;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,9 @@ namespace SampleSqlSugar
         static void Main(string[] args)
         {
             Console.WriteLine("Hello  SqlSugar Core Orm!");
-            test1();
-            //createEntity();
+            //test1();
+            createEntity();
+            //Console.WriteLine(underline2Camel("user_info_ak",true));
         }
 
         static void test1()
@@ -34,6 +36,7 @@ namespace SampleSqlSugar
                 //Console.WriteLine();
             };
 
+            //动态类型
             /*
             var t12 = db.SqlQueryable<dynamic>("select * from user_info").ToPageList(1, 2);//返回动态类型
             foreach (var obj in t12)
@@ -53,7 +56,7 @@ namespace SampleSqlSugar
             
         }
 
-        //生成实体类，存在缺陷，不能转换为驼峰
+        //生成实体类
         static void createEntity(){
             SqlSugarClient db = new SqlSugarClient(new ConnectionConfig()
             {
@@ -67,16 +70,47 @@ namespace SampleSqlSugar
              foreach (var dbTableInfo in dbTableInfoList){
                  //Console.WriteLine(DbTableInfo.Name);
                  var tableName = dbTableInfo.Name;
+                 var tableNameMapping = underline2Camel(tableName,true);        //表名转换为大驼峰映射
+                 db.MappingTables.Add(tableNameMapping, tableName);
                  List<DbColumnInfo> dbColumnInfoList = db.DbMaintenance.GetColumnInfosByTableName(tableName);
                  foreach(var dbColumnInfo in dbColumnInfoList){
                      //Console.WriteLine(dbColumnInfo.DbColumnName);
                      var columnName = dbColumnInfo.DbColumnName;
+                     var columnNameMapper = underline2Camel(columnName);        //字段名转换为小驼峰映射
+                     db.MappingColumns.Add(columnNameMapper, columnName, tableNameMapping);
                  }
              }
 
-            db.MappingTables.Add("userInfo", "user_info");
-            db.MappingColumns.Add("parentId", "parent_id", "userInfo");
-            db.DbFirst.IsCreateAttribute().CreateClassFile("f:\\Demo","SampleSqlSugar.Entity");
+            //db.MappingTables.Add("userInfo", "user_info");
+            //db.MappingColumns.Add("parentId", "parent_id", "userInfo");
+            var path1 =  Environment.CurrentDirectory;
+            var path2 = Directory.GetCurrentDirectory();
+            Console.WriteLine(path1 + " | " + path2);
+            var pathEntity = path1 + "/Entity";
+            db.DbFirst.IsCreateAttribute().CreateClassFile(pathEntity,"SampleSqlSugar.Entity");
+        }
+
+        static string underline2Camel(string sourceStr,bool bigCamel=false){
+
+            Match mt = Regex.Match(sourceStr, @"_(\w*)*");
+            while (mt.Success)
+            {
+                string item = mt.Value;
+                //Console.WriteLine("item:" + item);
+                while (item.IndexOf('_') >= 0)
+                {
+                    string newUpper = item.Substring(item.IndexOf('_'), 2);
+                    //Console.WriteLine("newUpper:" + newUpper);
+                    item = item.Replace(newUpper, newUpper.Trim('_').ToUpper());
+                    sourceStr = sourceStr.Replace(newUpper, newUpper.Trim('_').ToUpper());
+                }
+                mt = mt.NextMatch();
+            }
+            if(bigCamel){       //大驼峰,把第一个字符变大
+                var firstChar = sourceStr.Substring(0,1).ToUpper();
+                sourceStr = firstChar + sourceStr.Substring(1);
+            }
+            return sourceStr;
         }
     }
 }
