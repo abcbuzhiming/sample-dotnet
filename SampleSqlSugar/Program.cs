@@ -51,7 +51,7 @@ namespace SampleSqlSugar
             var t12 = db.SqlQueryable<UserInfo>("select * from user_info").ToPageList(1, 2);//返回动态类型
             foreach (var obj in t12)
             {
-                Console.WriteLine(obj.parentId);
+                Console.WriteLine(obj.rssi);
             }
             
         }
