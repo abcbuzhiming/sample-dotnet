@@ -26,8 +26,8 @@ namespace SampleAspNetCache
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMemoryCache();      //启用内存中缓存
-
+            services.AddMemoryCache();      //启用内存中缓存,无限制
+            //services.AddSingleton<MyMemoryCache>();     //使用自定义带大小限制的缓存
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
