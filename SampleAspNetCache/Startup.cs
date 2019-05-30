@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 
 namespace SampleAspNetCache
 {
+    //内存型缓存的范例配置
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -25,6 +26,8 @@ namespace SampleAspNetCache
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMemoryCache();      //启用内存中缓存
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -41,7 +44,8 @@ namespace SampleAspNetCache
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();        //https强制跳转
+            app.UseStatusCodePages();
             app.UseMvc();
         }
     }
