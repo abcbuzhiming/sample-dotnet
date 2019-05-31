@@ -20,7 +20,7 @@ namespace SampleHttpRequest
         public static async void samplePost(){
              var url = new Uri(@"http://127.0.0.1:8080/ccnu-study-schedule-butler-system/app/infoVersion", UriKind.Absolute);
             var httpClient = new HttpClient();
-            //httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+            //httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));        //Accept头
             HttpContent httpContent = new StringContent("type=1");
             //HttpContent httpContent = new StringContent("{'type':1}");
             //httpContent.Headers.ContentType= new MediaTypeHeaderValue("application/json");
