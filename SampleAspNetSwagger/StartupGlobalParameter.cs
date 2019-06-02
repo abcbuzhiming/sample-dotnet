@@ -15,12 +15,16 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Http;
 using Swashbuckle.AspNetCore.Swagger;
+using SampleAspNetSwagger.Filters;
 
 namespace SampleAspNetSwagger
 {
-    public class Startup
+    /// <summary>
+    /// 这个配置给Swagger的每个接口加上一个参数，这个参数可以传递到路径，form，header
+    /// </summary>
+    public class StartupGlobalParameter
     {
-        public Startup(IConfiguration configuration)
+        public StartupGlobalParameter(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -38,6 +42,8 @@ namespace SampleAspNetSwagger
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";      //需要生成xml注释用于swagger文档
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+
+                c.OperationFilter<MyHeaderFilter>();        //增加一个过滤器，添加全局参数(每个api都会有)
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

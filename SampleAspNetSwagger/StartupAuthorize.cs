@@ -18,9 +18,14 @@ using Swashbuckle.AspNetCore.Swagger;
 
 namespace SampleAspNetSwagger
 {
-    public class Startup
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>参考：https://ppolyzos.com/2017/10/30/add-jwt-bearer-authorization-to-swagger-and-asp-net-core/</remarks>
+    /// 
+    public class StartupAuthorize
     {
-        public Startup(IConfiguration configuration)
+        public StartupAuthorize(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -34,6 +39,20 @@ namespace SampleAspNetSwagger
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Sample", Version = "v1" });
+
+                // Swagger 2.+ support
+                var security = new Dictionary<string, IEnumerable<string>>
+                {
+                    {"Bearer", new string[] { }},       //注意这里的键Bearer必须和下面AddSecurityDefinition的第一个参数对应
+                };
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",       //描述
+                    Name = "Authorization",     //参数名称  
+                    In = "header",              //参数放在哪里，query是url里，form是表单型参数,header是http头
+                    Type = "apiKey"             
+                });
+                c.AddSecurityRequirement(security);
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";      //需要生成xml注释用于swagger文档
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);

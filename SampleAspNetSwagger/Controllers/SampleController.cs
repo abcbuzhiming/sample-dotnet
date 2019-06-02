@@ -40,6 +40,19 @@ namespace SampleAspNetSwagger.Controllers
         }
 
         /// <summary>
+        /// 以path的方式传参
+        /// </summary>
+        /// <remarks>演示参数附加在url上提交</remarks>
+        /// <param name="name">用户名</param>
+        /// <param name="password">密码</param>
+        [HttpGet("{name}/{password}")]
+        public string path([Required]string name, [Required]string password)
+        {
+            Console.WriteLine("param:" + name + "|" + password);
+            return "sample request by path param ";
+        }
+
+        /// <summary>
         /// 以form表单方式传参
         /// </summary>
         /// <remarks>演示参数以form表单的方式提交，参数名称必须加[FromForm]特性，另外可以用Consumes设定Content-Type头强制Swagger的请求头</remarks>
