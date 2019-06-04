@@ -10,9 +10,15 @@ using Microsoft.Extensions.Logging;
 
 namespace SampleAspNetCoreAuth.Controllers
 {
+    /// <summary>
+    /// Microsoft.AspNetCore.Identity的范例
+    /// </summary>
     [Route("base/[controller]/[action]")]
     public class UserController:Controller
     {
+        /// <summary>
+        /// UserManager实际依赖于Microsoft.AspNet.Identity.EntityFramework这个实现
+        /// </summary>
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger _logger;

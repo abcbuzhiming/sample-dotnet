@@ -86,6 +86,7 @@ namespace SampleAspNetCoreAuth
             }
 
             //app.UseHttpsRedirection();      //强制https跳转
+            app.UseStatusCodePages();       //使用HTTP错误代码页中间件(该选项检查状态代码介于400和599之间且没有正文的响应,给他们加上状态码内容，注意中间有顺序问题，不能加在ExceptionHandler前面)
             app.UseCookiePolicy();          //Cookie 策略中间件
 
             app.UseAuthentication();        //添加了身份验证中间件到请求管道
