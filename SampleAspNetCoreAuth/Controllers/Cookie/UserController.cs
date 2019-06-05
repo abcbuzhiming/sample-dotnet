@@ -70,7 +70,14 @@ namespace SampleAspNetCoreAuth.Controllers.Cookie
 
         //基于角色的授权，注意，区分大小写
         [Authorize(Roles = "admin")]
-        public string admin()
+        public string role()
+        {
+            return "cookie user admin";
+        }
+
+        //基于策略的授权，注意，必须注册策略本身，否则启动就报错
+        //[Authorize(Policy = "AtLeast21")]
+        public string policy()
         {
             return "cookie user admin";
         }

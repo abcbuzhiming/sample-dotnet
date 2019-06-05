@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
+using SampleAspNetCoreAuth.Authorization;
 
 namespace SampleAspNetCoreAuth
 {
@@ -68,6 +70,7 @@ namespace SampleAspNetCoreAuth
             });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();     //HttpContext中间件
+            services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
