@@ -22,6 +22,9 @@ Asp.Net Core的认证和授权
 * 使用StartupJwt.cs作为配置文件
 * 范例控制器在Controllers/Jwt中
 
+## cookie认证模式下不进行跳转
+https://stackoverflow.com/questions/32863080/how-to-remove-the-redirect-from-an-asp-net-core-webapi-and-return-http-401
+
 ## 总结
 * 官方推荐的解决方案就是基于策略，你注册一个策略，然后在策略的处理器里决定当前的用户到底有没有权限，为此你可以查数据库查缓存。但是缺陷就是每个策略都要注册1次才能用
 * 更简单直接的方法就是自定义一个授权过滤器，在它的处理方法里你也是可以相干啥就干啥

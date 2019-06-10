@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using SampleAspNetCoreAuth.Constant;
+
 
 namespace SampleAspNetCoreAuth.Controllers.Cookie
 {
@@ -39,6 +41,7 @@ namespace SampleAspNetCoreAuth.Controllers.Cookie
             //claim，在asp.net core体系里称为声明
             //1.0版本
             var claimIdentity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);       //表示基于声明的身份,使用的身份验证类型是cookie
+            claimIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, username));
             claimIdentity.AddClaim(new Claim(ClaimTypes.Name, username));
             claimIdentity.AddClaim(new Claim(ClaimTypes.Role,"admin"));     //角色
                        
@@ -76,10 +79,10 @@ namespace SampleAspNetCoreAuth.Controllers.Cookie
         }
 
         //基于策略的授权，注意，必须注册策略本身，否则启动就报错
-        //[Authorize(Policy = "AtLeast21")]
+        [Authorize(Policy = Permissions.UserRead)]
         public string policy()
         {
-            return "cookie user admin";
+            return "cookie user read by policy";
         }
 
         //获取用户基本信息（如果cookie过期，得到的就是null）

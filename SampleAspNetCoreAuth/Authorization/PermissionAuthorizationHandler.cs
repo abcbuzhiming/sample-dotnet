@@ -14,13 +14,15 @@ namespace SampleAspNetCoreAuth.Authorization
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionAuthorizationRequirement requirement)
         {
-            Console.WriteLine("PermissionAuthorizationHandler.HandleRequirementAsync");
+            Console.WriteLine("PermissionAuthorizationHandler.HandleRequirementAsync:" + requirement.Name);
             if(context.User == null){
+                Console.WriteLine("context.User is null");
                 return Task.CompletedTask;
             }
             var userIdClaim = context.User.FindFirst(claim => claim.Type == ClaimTypes.NameIdentifier);
             if (userIdClaim == null)
             {
+                Console.WriteLine("userIdClaim is null");
                 return Task.CompletedTask;
             }
             //从这里，引入自定义存储，检测用户是否有足够的权限
