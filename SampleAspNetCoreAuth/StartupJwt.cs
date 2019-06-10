@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using IdentityModel;
+using System.Security.Claims;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +21,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.IdentityModel.Tokens;
 using SampleAspNetCoreAuth.Data;
+using Microsoft.AspNetCore.Authorization;
+using SampleAspNetCoreAuth.Authorization;
+using SampleAspNetCoreAuth.Constant;
 
 
 namespace SampleAspNetCoreAuth
@@ -62,12 +66,14 @@ namespace SampleAspNetCoreAuth
                         return Task.CompletedTask;
                     }
                 };
-                 */                 
+                 */
+                
+                                 
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    NameClaimType = JwtClaimTypes.Name,     //定义那么属性的key
-                    RoleClaimType = JwtClaimTypes.Role,        
+                    NameClaimType = JwtClaimTypes.Name,     //定义哪些属性的key
+                    RoleClaimType = ClaimTypes.Role,   //这里似乎有bug，和实际的JwtClaimTypes不符合的时候可以通过授权，符合了反而通不过了
 
                     ValidIssuer = "http://localhost:5200",      //Token颁发机构
                     ValidAudience = "api",                      //颁发给谁
@@ -90,8 +96,21 @@ namespace SampleAspNetCoreAuth
                 };
             });
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();     //HttpContext中间件
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();     //HttpContext中间件
 
+            //基于策略的授权配置方法
+            services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();     //权限处理Handler注册
+            
+            services.AddAuthorization(options =>            //把权限和Requirement关联
+            {   
+                
+                options.AddPolicy(Permissions.UserCreate, policy => policy.AddRequirements(new PermissionAuthorizationRequirement(Permissions.UserCreate)));
+                options.AddPolicy(Permissions.UserRead, policy => policy.AddRequirements(new PermissionAuthorizationRequirement(Permissions.UserRead)));
+                options.AddPolicy(Permissions.UserUpdate, policy => policy.AddRequirements(new PermissionAuthorizationRequirement(Permissions.UserUpdate)));
+                options.AddPolicy(Permissions.UserDelete, policy => policy.AddRequirements(new PermissionAuthorizationRequirement(Permissions.UserDelete)));
+                 
+                
+            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

@@ -54,7 +54,7 @@ namespace SampleAspNetCoreAuth
                     {
                         context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         // added for .NET Core 1.0.1 and above (thanks to @Sean for the update)
-                        context.Response.WriteAsync("{\"error\": " + context.Response.StatusCode + ",No Login" + "}");
+                        context.Response.WriteAsync("{\"error\": " + context.Response.StatusCode + "; Unauthorized" + "}");
 
                         //context.Response.Redirect(context.RedirectUri);       跳转的写法
                         return Task.CompletedTask;
@@ -62,7 +62,7 @@ namespace SampleAspNetCoreAuth
 
                     OnRedirectToAccessDenied = context =>      //在这里重新定义授权失败时的行为，默认系统会自动跳转到AccessDeniedPath指定的url
                     {
-                        context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                         // added for .NET Core 1.0.1 and above (thanks to @Sean for the update)
                         context.Response.WriteAsync("{\"error\": " + context.Response.StatusCode + ",AccessDenied" + "}");
 
@@ -81,16 +81,22 @@ namespace SampleAspNetCoreAuth
             });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();     //HttpContext中间件
-
+            
             //基于策略的授权配置方法
             services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();     //权限处理Handler注册
+            
             services.AddAuthorization(options =>            //把权限和Requirement关联
-            {
+            {   
+                
                 options.AddPolicy(Permissions.UserCreate, policy => policy.AddRequirements(new PermissionAuthorizationRequirement(Permissions.UserCreate)));
                 options.AddPolicy(Permissions.UserRead, policy => policy.AddRequirements(new PermissionAuthorizationRequirement(Permissions.UserRead)));
                 options.AddPolicy(Permissions.UserUpdate, policy => policy.AddRequirements(new PermissionAuthorizationRequirement(Permissions.UserUpdate)));
                 options.AddPolicy(Permissions.UserDelete, policy => policy.AddRequirements(new PermissionAuthorizationRequirement(Permissions.UserDelete)));
+                 
+                
             });
+            
+            
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

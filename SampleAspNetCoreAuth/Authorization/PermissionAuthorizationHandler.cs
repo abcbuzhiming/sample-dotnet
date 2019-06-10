@@ -1,3 +1,4 @@
+using IdentityModel;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -19,12 +20,16 @@ namespace SampleAspNetCoreAuth.Authorization
                 Console.WriteLine("context.User is null");
                 return Task.CompletedTask;
             }
-            var userIdClaim = context.User.FindFirst(claim => claim.Type == ClaimTypes.NameIdentifier);
+            
+            //var userIdClaim = context.User.FindFirst(claim => claim.Type == ClaimTypes.NameIdentifier);       //cookie的方式
+            var userIdClaim = context.User.FindFirst(claim => claim.Type == JwtClaimTypes.Id);         //jwt方式
             if (userIdClaim == null)
             {
                 Console.WriteLine("userIdClaim is null");
                 return Task.CompletedTask;
             }
+            var role = context.User.FindFirst(claim => claim.Type == ClaimTypes.Role); 
+            Console.WriteLine("role:" + role);
             //从这里，引入自定义存储，检测用户是否有足够的权限
 
             //if (_userStore.CheckPermission(int.Parse(userIdClaim.Value), requirement.Name))

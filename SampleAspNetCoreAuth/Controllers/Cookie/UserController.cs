@@ -13,12 +13,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using SampleAspNetCoreAuth.Constant;
-
+using SampleAspNetCoreAuth.Authorization;
 
 namespace SampleAspNetCoreAuth.Controllers.Cookie
 {
     [Route("cookie/[controller]/[action]")]
-    public class UserController:Controller
+    public class UserController : Controller
     {
         //中间件HttpContext获取
         private IHttpContextAccessor _accessor;
@@ -34,8 +34,9 @@ namespace SampleAspNetCoreAuth.Controllers.Cookie
         }
 
         //登录过程
-        public async Task<string> doLogin(){
-            
+        public async Task<string> doLogin()
+        {
+
             //这里要进行数据库查找用户等操作
             string username = "admin";
             //claim，在asp.net core体系里称为声明
@@ -43,15 +44,18 @@ namespace SampleAspNetCoreAuth.Controllers.Cookie
             var claimIdentity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);       //表示基于声明的身份,使用的身份验证类型是cookie
             claimIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, username));
             claimIdentity.AddClaim(new Claim(ClaimTypes.Name, username));
-            claimIdentity.AddClaim(new Claim(ClaimTypes.Role,"admin"));     //角色
-                       
+            claimIdentity.AddClaim(new Claim(ClaimTypes.Role, "admin"));     //角色
 
-            var claimsPrincipal = new ClaimsPrincipal(claimIdentity);   
-            
+
+            var claimsPrincipal = new ClaimsPrincipal(claimIdentity);
+
             HttpContext httpContext = _accessor.HttpContext;
-            await httpContext.SignInAsync(claimsPrincipal);     //登录
-            
-            
+            await httpContext.SignInAsync(claimsPrincipal, new AuthenticationProperties
+            {
+                IsPersistent = true     //默认true，作为cookie持久保存直到过期，如果设置为false，则cookie被设置为关闭浏览器就失效
+            });     //登录
+
+
 
             return "cookie doLogin success";
         }
@@ -85,10 +89,19 @@ namespace SampleAspNetCoreAuth.Controllers.Cookie
             return "cookie user read by policy";
         }
 
+
+        //基于自定义特性的认证
+        [PermissionFilter(Permissions.UserRead)]
+        public string customfilter()
+        {
+            return "cookie user read by customfilter";
+        }
+
         //获取用户基本信息（如果cookie过期，得到的就是null）
-        public string getUserInfo(){
-             HttpContext httpContext = _accessor.HttpContext;
-             var username = httpContext.User.Identity.Name;
+        public string getUserInfo()
+        {
+            HttpContext httpContext = _accessor.HttpContext;
+            var username = httpContext.User.Identity.Name;
             return "cookie getUserInfo:" + username;
         }
     }

@@ -7,7 +7,8 @@ using System.Security.Claims;
 using System.Text;
 using SampleAspNetCoreAuth.Data;
 using Microsoft.AspNetCore.Authorization;
-
+using SampleAspNetCoreAuth.Constant;
+using SampleAspNetCoreAuth.Authorization;
 
 
 namespace SampleAspNetCoreAuth.Controllers.Jwt
@@ -44,6 +45,8 @@ namespace SampleAspNetCoreAuth.Controllers.Jwt
                     new Claim(JwtClaimTypes.Issuer,"http://localhost:5200"),
                     new Claim(JwtClaimTypes.Id, id.ToString()),
                     new Claim(JwtClaimTypes.Name, username),
+                    new Claim(JwtClaimTypes.Role, "admin"),     //角色
+                    //new Claim(JwtClaimTypes.Role, "user"),     //角色
                 }),
                 Expires = expiresAt,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -80,9 +83,17 @@ namespace SampleAspNetCoreAuth.Controllers.Jwt
 
         //基于角色的授权，注意，区分大小写
         [Authorize(Roles = "admin")]
-        public string admin()
+        public string role()
         {
             return "jwt user admin";
+        }
+
+        
+        //基于策略的授权，注意，必须注册策略本身，否则启动就报错
+        [Authorize(Policy = Permissions.UserRead)]
+        public string policy()
+        {
+            return "jwt user read by policy";
         }
 
         //获取用户基本信息（如果cookie过期，得到的就是null）
