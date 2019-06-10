@@ -21,7 +21,7 @@ Asp.Net Core的认证和授权
 ## 基于jwt(http header中传递token)
 * 使用StartupJwt.cs作为配置文件
 * 范例控制器在Controllers/Jwt中
-* 这种方式是在Http header中添加key名称为Authorization，值为Bearer {token}来通过验证
+* 这种方式是在Http header中添加key名称为 Authorization ，值为 Bearer {token}来通过验证
 
 ## cookie认证模式下不进行跳转
 https://stackoverflow.com/questions/32863080/how-to-remove-the-redirect-from-an-asp-net-core-webapi-and-return-http-401
