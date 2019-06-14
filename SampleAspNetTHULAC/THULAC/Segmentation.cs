@@ -9,22 +9,22 @@ namespace SampleAspNetTHULAC.THULAC
     /// </summary>
     public class Segmentation
     {
-        [DllImport(@"F:/THULAC_pro_c++_v1/libthulac.dll")]      //引入C语言写的动态链接库文件，win下是dll，类Unix下是so文件
-        //[DllImport(@"/usr/local/src/THULAC/libthulac.so")]
+        //[DllImport(@"F:/THULAC_pro_c++_v1/libthulac.dll")]      //引入C语言写的动态链接库文件，win下是dll，类Unix下是so文件
+        [DllImport(@"/usr/local/src/THULAC/libthulac.so")]
         public static extern int init(string model_path = null, string user_dict_path = null, int ret_size = 1024 * 1024 * 16, int t2s = 0, int just_seg = 0);
 
-        [DllImport(@"F:/THULAC_pro_c++_v1/libthulac.dll")]
-        //[DllImport(@"/usr/local/src/THULAC/libthulac.so")]  
+        //[DllImport(@"F:/THULAC_pro_c++_v1/libthulac.dll")]
+        [DllImport(@"/usr/local/src/THULAC/libthulac.so")]  
         public static extern int seg(byte[] inStr);
 
-        [DllImport(@"F:/THULAC_pro_c++_v1/libthulac.dll")]
-        //[DllImport(@"/usr/local/src/THULAC/libthulac.so")]
+        //[DllImport(@"F:/THULAC_pro_c++_v1/libthulac.dll")]
+        [DllImport(@"/usr/local/src/THULAC/libthulac.so")]
         public static extern IntPtr getResult();
 
         static Segmentation(){
             Console.WriteLine("init THULAC!");
-            init(model_path: @"F:/THULAC_pro_c++_v1/models");       //传入模型路径
-            //init(model_path:@"/usr/local/src/THULAC/models");
+            //init(model_path: @"F:/THULAC_pro_c++_v1/models");       //传入模型路径
+            init(model_path:@"/usr/local/src/THULAC/models");
             Console.WriteLine("初始化成功");
         }
 

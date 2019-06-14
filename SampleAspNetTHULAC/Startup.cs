@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.AspNetCore.Http;
 
 
 namespace SampleAspNetTHULAC
@@ -45,12 +46,15 @@ namespace SampleAspNetTHULAC
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var pathBase = "/thulac";      //基础应用路径
+            app.UsePathBase(new PathString(pathBase));      //注意，它基于中间件原理，所以必须在最前面调用
+
             //启用中间件服务生成Swagger作为JSON终结点
             app.UseSwagger();
             //启用中间件服务对swagger-ui，指定Swagger JSON终结点
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sample v1");
+                c.SwaggerEndpoint(pathBase + "/swagger/v1/swagger.json", "Sample v1");
             });
 
             if (env.IsDevelopment())
