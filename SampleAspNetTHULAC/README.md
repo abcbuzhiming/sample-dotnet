@@ -1,0 +1,2 @@
+# SampleAspNetTHULAC
+为THULAC分词搭建了一个Http的接口
