@@ -11,15 +11,19 @@ namespace SampleAspNetTHULAC.THULAC
     {
         //[DllImport(@"F:/THULAC_pro_c++_v1/libthulac.dll")]      //引入C语言写的动态链接库文件，win下是dll，类Unix下是so文件
         [DllImport(@"/usr/local/src/THULAC/libthulac.so")]
-        public static extern int init(string model_path = null, string user_dict_path = null, int ret_size = 1024 * 1024 * 16, int t2s = 0, int just_seg = 0);
+        public static extern int init(string model_path = null, string user_dict_path = null, int ret_size = 1024 * 1024 * 16, int t2s = 0, int just_seg = 0);      //初始化模型数据
 
         //[DllImport(@"F:/THULAC_pro_c++_v1/libthulac.dll")]
         [DllImport(@"/usr/local/src/THULAC/libthulac.so")]  
-        public static extern int seg(byte[] inStr);
+        public static extern int seg(byte[] inStr);     //输入内容进行分词
 
         //[DllImport(@"F:/THULAC_pro_c++_v1/libthulac.dll")]
         [DllImport(@"/usr/local/src/THULAC/libthulac.so")]
-        public static extern IntPtr getResult();
+        public static extern IntPtr getResult();        //获取分词结果
+
+        //[DllImport(@"F:/THULAC_pro_c++_v1/libthulac.dll")]
+        [DllImport(@"/usr/local/src/THULAC/libthulac.so")]
+        public static extern void freeResult();        //释放内存
 
         static Segmentation(){
             Console.WriteLine("init THULAC!");
@@ -36,7 +40,7 @@ namespace SampleAspNetTHULAC.THULAC
             Console.WriteLine("获得结果ptr:" + result);
             String resultStr = PtrToStringUtf8(result);
             Console.WriteLine("获得结果resultStr:" + resultStr);
-
+            freeResult();
             return resultStr;
         }
         private static string PtrToStringUtf8(IntPtr ptr) // aPtr is nul-terminated
