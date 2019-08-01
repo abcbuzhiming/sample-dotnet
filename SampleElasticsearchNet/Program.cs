@@ -7,7 +7,10 @@ namespace SampleElasticsearchNet
         static void Main(string[] args)
         {
             Console.WriteLine("Hello Elasticsearch.Net and NEST!");
-            ElasticService.CreateIndexMapping();
+            //ElasticService.CreateIndexMapping();
+            //ElasticService.IndexData();
+            ElasticService.QueryMatch("环保除尘",1,20);
+
         }
     }
 }
