@@ -6,14 +6,17 @@ namespace SampleAspNetLTP.LTP
 {
     public class Segmentation
     {
-        [DllImport(@"E:/NLP/LTP/lib/segmentor.dll")]      //引入C语言写的动态链接库文件，win下是dll，类Unix下是so文件
+        //[DllImport(@"E:/NLP/LTP/lib/segmentor.dll")]      //引入C语言写的动态链接库文件，win下是dll，类Unix下是so文件
+        [DllImport(@"E:/NLP/LTP/ltp-3.4.0-SourceCode/lib/Release/segmentor.dll")]
         public static extern IntPtr segmentor_create_segmentor(string modelPath,string lexiconFile = null);      //初始化分词器，得到分词器对象指针
 
-        [DllImport(@"E:/NLP/LTP/lib/segmentor.dll")]
+        //[DllImport(@"E:/NLP/LTP/lib/segmentor.dll")]
+        [DllImport(@"E:/NLP/LTP/ltp-3.4.0-SourceCode/lib/Release/segmentor.dll")]
         public static extern int segmentor_release_segmentor(IntPtr parser);        //释放分词器
 
-        [DllImport(@"E:/NLP/LTP/lib/segmentor.dll")]
-        public static extern int segmentor_segment(IntPtr parser,string source,IntPtr words);
+        //[DllImport(@"E:/NLP/LTP/lib/segmentor.dll")]
+        [DllImport(@"E:/NLP/LTP/ltp-3.4.0-SourceCode/lib/Release/segmentor.dll")]
+        public static extern int segmentor_segment_csharp(IntPtr parser,byte[] inStr,StringBuilder words);
 
         public static IntPtr parser;        //分词器的指针
 
@@ -25,7 +28,12 @@ namespace SampleAspNetLTP.LTP
         }
 
         public static string splite(string source){
-            string resultStr = source;
+            byte[] byteUtf8 = Encoding.UTF8.GetBytes(source);
+            StringBuilder sb = new StringBuilder(source.Length * 2 + 10);
+            Console.WriteLine("source:" + source);
+            segmentor_segment_csharp(parser,byteUtf8,sb);
+            Console.WriteLine("result:" + sb.ToString());
+            string resultStr = sb.ToString();
             return resultStr;
         }
     }

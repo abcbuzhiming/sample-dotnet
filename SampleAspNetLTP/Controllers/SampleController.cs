@@ -26,8 +26,7 @@ namespace SampleAspNetLTP.Controllers
         /// </summary>
         /// <remarks>输入源内容，输出分词结果</remarks>
         /// <param name="sourceContent">源内容</param>
-        [HttpPost]
-        [Consumes("application/x-www-form-urlencoded")]
+        [HttpPost,Consumes("application/x-www-form-urlencoded")]
         public string seq([Required][FromForm]string sourceContent)
         {
             string result = Segmentation.splite(sourceContent);
