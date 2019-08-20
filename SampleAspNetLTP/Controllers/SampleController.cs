@@ -30,6 +30,7 @@ namespace SampleAspNetLTP.Controllers
         public string seq([Required][FromForm]string sourceContent)
         {
             string result = Segmentation.splite(sourceContent);
+            result = Postagger.pos(result);
             return result;
         }
     }
