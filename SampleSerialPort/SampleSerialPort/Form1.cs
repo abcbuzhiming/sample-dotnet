@@ -71,7 +71,7 @@ namespace SampleSerialPort
                     MessageBox.Show("串口未设置", "错误提示");
                     return;
                 }
-                
+                SetPortProperty();
                 try //打开串口
                 {
                     serialPort.Open();
@@ -150,14 +150,20 @@ namespace SampleSerialPort
             string parityType = comboBoxCheckBit.Text.Trim(); //设置奇偶校验
             switch (parityType)
             {
-                case "无":
+                case "None (无)":
                     serialPort.Parity = Parity.None;
                     break;
-                case "奇校验":
+                case "Odd   (偶)":
                     serialPort.Parity = Parity.Odd;
                     break;
-                case "偶校验":
+                case "Even  (奇)":
                     serialPort.Parity = Parity.Even;
+                    break;
+                case "Mark (=1)":
+                    serialPort.Parity = Parity.Mark;
+                    break;
+                case "Space(=0)":
+                    serialPort.Parity = Parity.Space;
                     break;
                 default:
                     serialPort.Parity = Parity.None;
@@ -177,6 +183,7 @@ namespace SampleSerialPort
         private void serial_DataReceived(object sender, EventArgs e)
         {
             //System.Threading.Thread.Sleep(100);  //延迟100ms等待接收完成数据
+            
             this.Invoke((EventHandler)(
                 delegate {
                     if (boolHexShow == false)       //非16位显示
@@ -185,6 +192,7 @@ namespace SampleSerialPort
                         Byte[] readBytes = new Byte[serialPort.BytesToRead];
                         serialPort.Read(readBytes, 0, readBytes.Length);
                         string decodedString = utf8.GetString(readBytes);
+                        Console.WriteLine("接收字符串:" + decodedString);
                         textBoxRecvData.Text += decodedString;
                     }
                     else        //16位显示数据
@@ -195,6 +203,9 @@ namespace SampleSerialPort
                 }
 
                 ));
+            
+
+            
         }
 
         /// <summary>
@@ -222,12 +233,18 @@ namespace SampleSerialPort
 
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("发送数据时发生错误！", "错误提示");
+                MessageBox.Show("发送数据时发生错误:" + ex.Message, "错误提示");
                 return;
 
             }
+        }
+
+        private void buttonClearResv_Click(object sender, EventArgs e)
+        {
+            textBoxRecvData.Text = String.Empty;
+            
         }
     }
 

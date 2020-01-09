@@ -45,7 +45,9 @@
             this.textBoxRecvData = new System.Windows.Forms.TextBox();
             this.textBoxSend = new System.Windows.Forms.TextBox();
             this.buttonSend = new System.Windows.Forms.Button();
+            this.buttonClearResv = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -129,6 +131,7 @@
             this.comboBoxCheckBit.Name = "comboBoxCheckBit";
             this.comboBoxCheckBit.Size = new System.Drawing.Size(115, 23);
             this.comboBoxCheckBit.TabIndex = 2;
+            this.comboBoxCheckBit.Text = "None (无)";
             // 
             // comboBoxRate
             // 
@@ -154,6 +157,7 @@
             this.comboBoxRate.Name = "comboBoxRate";
             this.comboBoxRate.Size = new System.Drawing.Size(115, 23);
             this.comboBoxRate.TabIndex = 1;
+            this.comboBoxRate.Text = "9600";
             // 
             // comboBoxPort
             // 
@@ -210,6 +214,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.buttonClearResv);
             this.groupBox2.Location = new System.Drawing.Point(12, 300);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(204, 220);
@@ -243,6 +248,16 @@
             this.buttonSend.UseVisualStyleBackColor = true;
             this.buttonSend.Click += new System.EventHandler(this.buttonSend_Click);
             // 
+            // buttonClearResv
+            // 
+            this.buttonClearResv.Location = new System.Drawing.Point(80, 15);
+            this.buttonClearResv.Name = "buttonClearResv";
+            this.buttonClearResv.Size = new System.Drawing.Size(97, 30);
+            this.buttonClearResv.TabIndex = 0;
+            this.buttonClearResv.Text = "清空接收区";
+            this.buttonClearResv.UseVisualStyleBackColor = true;
+            this.buttonClearResv.Click += new System.EventHandler(this.buttonClearResv_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -257,6 +272,7 @@
             this.Text = "Form1";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -281,6 +297,7 @@
         private System.Windows.Forms.TextBox textBoxRecvData;
         private System.Windows.Forms.TextBox textBoxSend;
         private System.Windows.Forms.Button buttonSend;
+        private System.Windows.Forms.Button buttonClearResv;
     }
 }
 
