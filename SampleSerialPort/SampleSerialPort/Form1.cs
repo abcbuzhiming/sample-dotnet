@@ -183,16 +183,16 @@ namespace SampleSerialPort
         private void serial_DataReceived(object sender, EventArgs e)
         {
             //System.Threading.Thread.Sleep(100);  //延迟100ms等待接收完成数据
-            
-            this.Invoke((EventHandler)(
+            System.Text.UTF8Encoding utf8 = new System.Text.UTF8Encoding();// 显示汉字与字符
+            Byte[] readBytes = new Byte[serialPort.BytesToRead];
+            serialPort.Read(readBytes, 0, readBytes.Length);
+            string decodedString = utf8.GetString(readBytes);
+            Console.WriteLine("接收字符串:" + decodedString);
+
+            this.BeginInvoke((EventHandler)(
                 delegate {
                     if (boolHexShow == false)       //非16位显示
                     {
-                        System.Text.UTF8Encoding utf8 = new System.Text.UTF8Encoding();// 显示汉字与字符
-                        Byte[] readBytes = new Byte[serialPort.BytesToRead];
-                        serialPort.Read(readBytes, 0, readBytes.Length);
-                        string decodedString = utf8.GetString(readBytes);
-                        Console.WriteLine("接收字符串:" + decodedString);
                         textBoxRecvData.Text += decodedString;
                     }
                     else        //16位显示数据
