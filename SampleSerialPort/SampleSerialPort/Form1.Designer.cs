@@ -42,8 +42,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBoxRecvData = new System.Windows.Forms.TextBox();
+            this.textBoxSend = new System.Windows.Forms.TextBox();
+            this.buttonSend = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -216,29 +217,40 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "接收";
             // 
-            // textBox1
+            // textBoxRecvData
             // 
-            this.textBox1.Location = new System.Drawing.Point(223, 23);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(739, 497);
-            this.textBox1.TabIndex = 2;
+            this.textBoxRecvData.Location = new System.Drawing.Point(223, 23);
+            this.textBoxRecvData.Multiline = true;
+            this.textBoxRecvData.Name = "textBoxRecvData";
+            this.textBoxRecvData.Size = new System.Drawing.Size(739, 497);
+            this.textBoxRecvData.TabIndex = 2;
             // 
-            // textBox2
+            // textBoxSend
             // 
-            this.textBox2.Location = new System.Drawing.Point(223, 527);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(739, 93);
-            this.textBox2.TabIndex = 3;
+            this.textBoxSend.Location = new System.Drawing.Point(223, 527);
+            this.textBoxSend.Multiline = true;
+            this.textBoxSend.Name = "textBoxSend";
+            this.textBoxSend.Size = new System.Drawing.Size(739, 93);
+            this.textBoxSend.TabIndex = 3;
+            // 
+            // buttonSend
+            // 
+            this.buttonSend.Location = new System.Drawing.Point(121, 536);
+            this.buttonSend.Name = "buttonSend";
+            this.buttonSend.Size = new System.Drawing.Size(85, 24);
+            this.buttonSend.TabIndex = 4;
+            this.buttonSend.Text = "发送";
+            this.buttonSend.UseVisualStyleBackColor = true;
+            this.buttonSend.Click += new System.EventHandler(this.buttonSend_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(974, 677);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.buttonSend);
+            this.Controls.Add(this.textBoxSend);
+            this.Controls.Add(this.textBoxRecvData);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
@@ -266,8 +278,9 @@
         private System.Windows.Forms.Button buttonOpen;
         private System.Windows.Forms.Button buttonDetectPort;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBoxRecvData;
+        private System.Windows.Forms.TextBox textBoxSend;
+        private System.Windows.Forms.Button buttonSend;
     }
 }
 

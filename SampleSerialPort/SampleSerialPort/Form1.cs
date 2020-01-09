@@ -118,5 +118,118 @@ namespace SampleSerialPort
             if (comboBoxStopBit.Text.Trim() == "") return false;
             return true;
         }
+
+        /// <summary>
+        /// 设置串口
+        /// </summary>
+        private void SetPortProperty()
+        {
+            serialPort = new SerialPort();
+            serialPort.PortName = comboBoxPort.Text.Trim();  //设置串口名
+            serialPort.BaudRate = Convert.ToInt32(comboBoxRate.Text.Trim()); //设置串口波特率
+            int stopBit = (int)Convert.ToSingle(comboBoxStopBit.Text.Trim()) * 10; //设置停止位            
+            switch (stopBit)
+            {
+                case 0:
+                    serialPort.StopBits = StopBits.None;
+                    break;
+                case 10:
+                    serialPort.StopBits = StopBits.One;
+                    break;
+                case 15:
+                    serialPort.StopBits = StopBits.OnePointFive;
+                    break;
+                case 20:
+                    serialPort.StopBits = StopBits.Two;
+                    break;
+                default:
+                    serialPort.StopBits = StopBits.None;
+                    break;
+            }
+            serialPort.DataBits = Convert.ToInt16(comboBoxDataBit.Text.Trim()); //设置数据位
+            string parityType = comboBoxCheckBit.Text.Trim(); //设置奇偶校验
+            switch (parityType)
+            {
+                case "无":
+                    serialPort.Parity = Parity.None;
+                    break;
+                case "奇校验":
+                    serialPort.Parity = Parity.Odd;
+                    break;
+                case "偶校验":
+                    serialPort.Parity = Parity.Even;
+                    break;
+                default:
+                    serialPort.Parity = Parity.None;
+                    break;
+            }
+            serialPort.ReadTimeout = -1; //超时读取时间
+            serialPort.RtsEnable = true; // 指示本设备准备好可接收数据
+            //定义Data Received事件，当串口收到数据后出发事件
+            serialPort.DataReceived += new SerialDataReceivedEventHandler(serial_DataReceived);
+        }
+
+        /// <summary>
+        /// 串口接收数据事件处理程序
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void serial_DataReceived(object sender, EventArgs e)
+        {
+            //System.Threading.Thread.Sleep(100);  //延迟100ms等待接收完成数据
+            this.Invoke((EventHandler)(
+                delegate {
+                    if (boolHexShow == false)       //非16位显示
+                    {
+                        System.Text.UTF8Encoding utf8 = new System.Text.UTF8Encoding();// 显示汉字与字符
+                        Byte[] readBytes = new Byte[serialPort.BytesToRead];
+                        serialPort.Read(readBytes, 0, readBytes.Length);
+                        string decodedString = utf8.GetString(readBytes);
+                        textBoxRecvData.Text += decodedString;
+                    }
+                    else        //16位显示数据
+                    {
+
+                    }
+
+                }
+
+                ));
+        }
+
+        /// <summary>
+        /// 发送数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonSend_Click(object sender, EventArgs e)
+        {
+            if(!boolOpen)
+            {
+                return;
+            }
+            if (textBoxSend.Text ==null ||textBoxSend.Text.Trim().Equals("")) 
+            {
+                return;
+            }
+
+            try
+            {
+                System.Text.UTF8Encoding utf8 = new System.Text.UTF8Encoding();
+                byte[] writeBytes = utf8.GetBytes(textBoxSend.Text);
+                //byte[] writeBytes11 = new Byte[data1.length]; //
+                serialPort.Write(writeBytes, 0, writeBytes.Length); //发送数据内容
+
+
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("发送数据时发生错误！", "错误提示");
+                return;
+
+            }
+        }
     }
+
+
 }
