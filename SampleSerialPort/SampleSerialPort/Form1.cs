@@ -94,6 +94,7 @@ namespace SampleSerialPort
                 }
 
                 //设置读取
+                /*
                 byte[] buffer = new byte[100];
                 Action kickoffRead = null;
                 kickoffRead = delegate
@@ -131,6 +132,7 @@ namespace SampleSerialPort
                     }, null);
                 };
                 kickoffRead();
+                */
             }
             else
             {
@@ -213,8 +215,8 @@ namespace SampleSerialPort
             serialPort.ReadTimeout = 500; //超时读取时间
             serialPort.RtsEnable = true; // 指示本设备准备好可接收数据
             //定义Data Received事件，当串口收到数据后出发事件
-            //serialPort.DataReceived += new SerialDataReceivedEventHandler(serial_DataReceived);
-            //serialPort.ErrorReceived += new SerialErrorReceivedEventHandler(serial_ErrorReceived);
+            serialPort.DataReceived += new SerialDataReceivedEventHandler(serial_DataReceived);
+            serialPort.ErrorReceived += new SerialErrorReceivedEventHandler(serial_ErrorReceived);
 
             
 
@@ -239,7 +241,8 @@ namespace SampleSerialPort
 
             Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " 接收到字符串:" + decodedString);
 
-            this.Invoke((EventHandler)(
+            
+            this.BeginInvoke((EventHandler)(
                 delegate
                 {
                     if (boolHexShow == false)       //非16位显示
@@ -254,6 +257,7 @@ namespace SampleSerialPort
                 }
 
                 ));
+            
         }
 
         /// <summary>

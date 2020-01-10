@@ -89,6 +89,5 @@ kickoffRead = delegate {
 kickoffRead();
 ```
 
-
-SerialPort.Read本身是阻塞方法，如果它读取不到给定的字节数据，就会一直卡在那里直到超时
+整个测试下来，发现问题可能还是出在this.Invoke把数据传递给UI上，只要去掉这个，就怎么也不会卡住，不像是SerialPort本身有问题
 
