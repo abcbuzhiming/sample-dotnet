@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
@@ -86,10 +87,50 @@ namespace SampleSerialPort
                 }
                 catch (Exception)
                 {   //失败后设置
-                    
+
                     boolOpen = false;
                     MessageBox.Show("串口无效或已经被占用！", "错误提示");
+                    return;
                 }
+
+                //设置读取
+                byte[] buffer = new byte[100];
+                Action kickoffRead = null;
+                kickoffRead = delegate
+                {
+                    serialPort.BaseStream.BeginRead(buffer, 0, buffer.Length, delegate (IAsyncResult ar)
+                    {
+                        try
+                        {
+                            int actualLength = serialPort.BaseStream.EndRead(ar);
+                            byte[] received = new byte[actualLength];
+                            Buffer.BlockCopy(buffer, 0, received, 0, actualLength);
+                            //raiseAppSerialDataEvent(received);
+                            System.Text.UTF8Encoding utf8 = new System.Text.UTF8Encoding();// 显示汉字与字符
+                            string decodedString = utf8.GetString(received);
+                            this.Invoke((EventHandler)(
+                                delegate
+                                {
+                                    if (boolHexShow == false)       //非16位显示
+                                {
+                                        textBoxRecvData.Text += decodedString;
+                                    }
+                                    else        //16位显示数据
+                                {
+
+                                    }
+
+                                }
+                                ));
+                        }
+                        catch (IOException exc)
+                        {
+                            Console.WriteLine("IO错误:" + exc.Message);
+                        }
+                        kickoffRead();
+                    }, null);
+                };
+                kickoffRead();
             }
             else
             {
@@ -169,28 +210,38 @@ namespace SampleSerialPort
                     serialPort.Parity = Parity.None;
                     break;
             }
-            serialPort.ReadTimeout = -1; //超时读取时间
+            serialPort.ReadTimeout = 500; //超时读取时间
             serialPort.RtsEnable = true; // 指示本设备准备好可接收数据
             //定义Data Received事件，当串口收到数据后出发事件
-            serialPort.DataReceived += new SerialDataReceivedEventHandler(serial_DataReceived);
+            //serialPort.DataReceived += new SerialDataReceivedEventHandler(serial_DataReceived);
+            //serialPort.ErrorReceived += new SerialErrorReceivedEventHandler(serial_ErrorReceived);
+
+            
+
         }
 
         /// <summary>
         /// 串口接收数据事件处理程序
         /// </summary>
+        /// <remarks>这个事件是在非ui线程中被调用</remarks>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void serial_DataReceived(object sender, EventArgs e)
         {
             //System.Threading.Thread.Sleep(100);  //延迟100ms等待接收完成数据
+            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " 触发接收事件，可读取字符串数量:" + serialPort.BytesToRead);
+
             System.Text.UTF8Encoding utf8 = new System.Text.UTF8Encoding();// 显示汉字与字符
             Byte[] readBytes = new Byte[serialPort.BytesToRead];
             serialPort.Read(readBytes, 0, readBytes.Length);
             string decodedString = utf8.GetString(readBytes);
-            Console.WriteLine("接收字符串:" + decodedString);
 
-            this.BeginInvoke((EventHandler)(
-                delegate {
+
+            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " 接收到字符串:" + decodedString);
+
+            this.Invoke((EventHandler)(
+                delegate
+                {
                     if (boolHexShow == false)       //非16位显示
                     {
                         textBoxRecvData.Text += decodedString;
@@ -203,9 +254,17 @@ namespace SampleSerialPort
                 }
 
                 ));
-            
+        }
 
-            
+        /// <summary>
+        /// 接收错误事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void serial_ErrorReceived(object sender, EventArgs e)
+        {
+            //SerialErrorReceivedEventArgs se = (SerialErrorReceivedEventArgs)e;
+            Console.WriteLine("读取错误:" + e.ToString());
         }
 
         /// <summary>
@@ -215,11 +274,11 @@ namespace SampleSerialPort
         /// <param name="e"></param>
         private void buttonSend_Click(object sender, EventArgs e)
         {
-            if(!boolOpen)
+            if (!boolOpen)
             {
                 return;
             }
-            if (textBoxSend.Text ==null ||textBoxSend.Text.Trim().Equals("")) 
+            if (textBoxSend.Text == null || textBoxSend.Text.Trim().Equals(""))
             {
                 return;
             }
@@ -244,7 +303,7 @@ namespace SampleSerialPort
         private void buttonClearResv_Click(object sender, EventArgs e)
         {
             textBoxRecvData.Text = String.Empty;
-            
+
         }
     }
 
