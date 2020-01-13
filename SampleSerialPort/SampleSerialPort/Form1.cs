@@ -33,6 +33,7 @@ namespace SampleSerialPort
         {
             bool comExist = false;
             comboBoxPort.Items.Clear();
+            /* 第一种检测串口的方式，无法检测到被使用的串口
             for (int i = 0; i < 10; i++)
             {
                 try
@@ -48,6 +49,14 @@ namespace SampleSerialPort
                     continue;
                 }
             }
+            */
+            //第二种检测串口方式
+            foreach (string s in SerialPort.GetPortNames())
+            {
+                comExist = true;
+                comboBoxPort.Items.Add(s);
+            }
+
             if (comExist)
             {
                 comboBoxPort.SelectedIndex = 0; //默认第一个
@@ -93,7 +102,7 @@ namespace SampleSerialPort
                     return;
                 }
 
-                //设置读取
+                //设置读取的另外一种方式
                 /*
                 byte[] buffer = new byte[100];
                 Action kickoffRead = null;
@@ -237,7 +246,16 @@ namespace SampleSerialPort
             Byte[] readBytes = new Byte[serialPort.BytesToRead];
             serialPort.Read(readBytes, 0, readBytes.Length);
             string decodedString = utf8.GetString(readBytes);
+            //string decodedString = utf8.GetString(readBytes).Replace("\r", "").Replace("\n", "");
+            if (decodedString.IndexOf("\r") >= 0) {
+                return;
+            }
+            if (decodedString.IndexOf("\n") >= 0) {
+                decodedString = decodedString.Replace("\r", "").Replace("\n", "");
+                decodedString += "\r\n";
+            }
 
+            
 
             Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " 接收到字符串:" + decodedString);
 
@@ -247,7 +265,7 @@ namespace SampleSerialPort
                 {
                     if (boolHexShow == false)       //非16位显示
                     {
-                        textBoxRecvData.Text += decodedString;
+                        textBoxRecvData.AppendText(decodedString);
                     }
                     else        //16位显示数据
                     {

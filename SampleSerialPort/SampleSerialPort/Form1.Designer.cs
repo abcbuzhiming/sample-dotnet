@@ -42,10 +42,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.buttonClearResv = new System.Windows.Forms.Button();
             this.textBoxRecvData = new System.Windows.Forms.TextBox();
             this.textBoxSend = new System.Windows.Forms.TextBox();
             this.buttonSend = new System.Windows.Forms.Button();
-            this.buttonClearResv = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -222,11 +222,22 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "接收";
             // 
+            // buttonClearResv
+            // 
+            this.buttonClearResv.Location = new System.Drawing.Point(80, 15);
+            this.buttonClearResv.Name = "buttonClearResv";
+            this.buttonClearResv.Size = new System.Drawing.Size(97, 30);
+            this.buttonClearResv.TabIndex = 0;
+            this.buttonClearResv.Text = "清空接收区";
+            this.buttonClearResv.UseVisualStyleBackColor = true;
+            this.buttonClearResv.Click += new System.EventHandler(this.buttonClearResv_Click);
+            // 
             // textBoxRecvData
             // 
             this.textBoxRecvData.Location = new System.Drawing.Point(223, 23);
             this.textBoxRecvData.Multiline = true;
             this.textBoxRecvData.Name = "textBoxRecvData";
+            this.textBoxRecvData.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxRecvData.Size = new System.Drawing.Size(739, 497);
             this.textBoxRecvData.TabIndex = 2;
             // 
@@ -247,16 +258,6 @@
             this.buttonSend.Text = "发送";
             this.buttonSend.UseVisualStyleBackColor = true;
             this.buttonSend.Click += new System.EventHandler(this.buttonSend_Click);
-            // 
-            // buttonClearResv
-            // 
-            this.buttonClearResv.Location = new System.Drawing.Point(80, 15);
-            this.buttonClearResv.Name = "buttonClearResv";
-            this.buttonClearResv.Size = new System.Drawing.Size(97, 30);
-            this.buttonClearResv.TabIndex = 0;
-            this.buttonClearResv.Text = "清空接收区";
-            this.buttonClearResv.UseVisualStyleBackColor = true;
-            this.buttonClearResv.Click += new System.EventHandler(this.buttonClearResv_Click);
             // 
             // Form1
             // 
