@@ -3,6 +3,9 @@
 
 ## 参考
 [C#串口通信-示例](https://www.cnblogs.com/chinahunter/p/10934387.html)
+[SerialPort.DataReceived之“管收不管埋”](https://www.cnblogs.com/showlie/articles/2367154.html)
+[关于串口接收的处理策略](https://blog.csdn.net/u010456460/article/details/53009252)
+[C# 接受串口数据处理的问题, 包全粘帖一起了 怎么处理](https://bbs.csdn.net/topics/390131699)
 
 
 ## 发现的坑
