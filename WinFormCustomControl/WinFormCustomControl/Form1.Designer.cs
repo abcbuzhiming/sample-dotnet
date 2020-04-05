@@ -28,22 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.drawTable1 = new CustomControl.DrawTable();
             this.SuspendLayout();
-            // 
-            // drawTable1
-            // 
-            this.drawTable1.Location = new System.Drawing.Point(156, 12);
-            this.drawTable1.Name = "drawTable1";
-            this.drawTable1.Size = new System.Drawing.Size(361, 396);
-            this.drawTable1.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(604, 420);
-            this.Controls.Add(this.drawTable1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -51,8 +42,6 @@
         }
 
         #endregion
-
-        private CustomControl.DrawTable drawTable1;
     }
 }
 

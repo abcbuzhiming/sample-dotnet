@@ -25,18 +25,23 @@ namespace CustomControl
         public DrawTable()
         {
             InitializeComponent();
+            //当尺寸改变时，进行重绘
+            this.SizeChanged += delegate
+            {
+                this.Invalidate();
+            };
         }
 
-        /// <summary>
-        /// 画表格
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DrawTable_Paint(object sender, PaintEventArgs e)
+        //解决控件批量更新时带来的闪烁
+        protected override CreateParams CreateParams { get { CreateParams cp = base.CreateParams; cp.ExStyle |= 0x02000000; return cp; } }
+
+
+        protected override void OnPaint(PaintEventArgs e)
         {
-            
-            //绘制表格
-            Graphics graphics = this.CreateGraphics();
+            //base.OnPaint(e);      //重写 OnPaint时，通常应调用基类的 OnPaint 方法，以便注册的委托接收 Paint 事件。 但是，绘制整个图面的控件不应调用基类的 OnPaint，因为这会引入闪烁
+
+            Graphics graphics = e.Graphics;
+                 
             Pen pen = new Pen(color, widthPen);  //设置画笔颜色和Pen
             //横线
             int hightRow = this.Height / numRow;    //行高
@@ -47,14 +52,13 @@ namespace CustomControl
 
             //竖线
             int widthColumn = this.Width / numColumn;
-            for (int x = 0; x <= this.Width;x += widthColumn)
+            for (int x = 0; x <= this.Width; x += widthColumn)
             {
                 graphics.DrawLine(pen, x, 0, x, this.Height);
-                
+
             }
-            
-
-
         }
+
+        
     }
 }

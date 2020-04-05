@@ -35,8 +35,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "DrawTable";
-            this.Size = new System.Drawing.Size(357, 485);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.DrawTable_Paint);
+            this.Size = new System.Drawing.Size(212, 297);
             this.ResumeLayout(false);
 
         }
