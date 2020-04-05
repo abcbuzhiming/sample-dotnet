@@ -13,7 +13,7 @@ namespace Monitor
     /// 自定义圆环靶标控件
     /// 参考：https://www.cnblogs.com/qylost/articles/11437998.html
     /// </summary>
-    class CircleTarget : Control
+    public class CircleTarget : Control
     {
         private int targetNumber = 0;       //中靶的数字，默认0代表没有中靶
         private int size = 280;     //这个靶标所处矩形区域的默认尺寸(圆形靶标必须是矩形)
