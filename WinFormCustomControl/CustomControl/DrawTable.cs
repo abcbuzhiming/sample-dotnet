@@ -44,17 +44,21 @@ namespace CustomControl
                  
             Pen pen = new Pen(color, widthPen);  //设置画笔颜色和Pen
             //横线
+            graphics.DrawLine(pen, 0, this.Height - widthPen, this.Width, this.Height - widthPen);//为了防止线露头，把最后一根单独画
             int hightRow = this.Height / numRow;    //行高
-            for (int y = 0; y <= this.Height; y += hightRow)
+            int y = 0;
+            for (int i = 0; i < numRow; i++)
             {
-                graphics.DrawLine(pen, 0, y, this.Width, y);
+                graphics.DrawLine(pen, 0, y + i * hightRow, this.Width, y + i * hightRow);
             }
 
             //竖线
+            graphics.DrawLine(pen, this.Width - widthPen, 0, this.Width - widthPen, this.Height);       //为了防止线露头，把最后一根单独画
             int widthColumn = this.Width / numColumn;
-            for (int x = 0; x <= this.Width; x += widthColumn)
+            int x = 0;
+            for (int i = 0; i <= numColumn; i++)
             {
-                graphics.DrawLine(pen, x, 0, x, this.Height);
+                graphics.DrawLine(pen, x + i * widthColumn, 0, x + i * widthColumn, this.Height);
 
             }
         }
