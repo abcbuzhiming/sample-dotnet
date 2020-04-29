@@ -1,7 +1,12 @@
 # Winform界面显示音频频谱
 用Winform播放音频，并显示频谱界面
+中文关键字:
+* 频谱
+* 环形频谱
+
 google搜索关键字: 
 * c# spectrum analyzer
+* circle audio spectrum
 * Peak Meter
 
 ## 参考
