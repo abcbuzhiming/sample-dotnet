@@ -90,11 +90,12 @@ namespace SampleAspNetCoreWebsocket
             WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
             while (!result.CloseStatus.HasValue)
             {
-                await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
+                Console.WriteLine("接收内容：" + System.Text.Encoding.UTF8.GetString(new ArraySegment<byte>(buffer, 0, result.Count).ToArray()));
 
+                await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
                 result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
 
-                Console.WriteLine("接收：" + System.Text.Encoding.UTF8.GetString(buffer));
+                
             }
             await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
         }
