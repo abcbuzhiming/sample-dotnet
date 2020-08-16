@@ -86,7 +86,7 @@ namespace SampleAspNetCoreWebsocket
         /// <returns></returns>
         private async Task Echo(HttpContext context, WebSocket webSocket)
         {
-            var buffer = new byte[1024 * 4];
+            var buffer = new byte[1024 * 4];        //缓冲区的读取是连续的，超过缓冲区长度的数据，如果是单字节的不会有影响，但如果是多字节，比如中文可能会造成解析错误
             WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
             while (!result.CloseStatus.HasValue)
             {
