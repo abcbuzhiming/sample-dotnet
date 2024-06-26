@@ -58,6 +58,7 @@ namespace SampleSqlSugar
 
         //生成实体类
         static void createEntity(){
+            /*
             SqlSugarClient db = new SqlSugarClient(new ConnectionConfig()
             {
                 ConnectionString = "server=127.0.0.1;port=3306;uid=sa;pwd=lanshanTest@2018&26g;database=test1",     //连接字符串基于sqlconnection格式(不同数据库格式不同)
@@ -65,21 +66,30 @@ namespace SampleSqlSugar
                 IsAutoCloseConnection = true,       //自动释放数据务，如果存在事务，在事务结束后释放
                 InitKeyType = InitKeyType.Attribute     //从实体特性中读取主键自增列信息
             });
+            */
 
-            List<DbTableInfo> dbTableInfoList = db.DbMaintenance.GetTableInfoList();
-             foreach (var dbTableInfo in dbTableInfoList){
-                 //Console.WriteLine(DbTableInfo.Name);
-                 var tableName = dbTableInfo.Name;
-                 var tableNameMapping = underline2Camel(tableName,true);        //表名转换为大驼峰映射
-                 db.MappingTables.Add(tableNameMapping, tableName);
-                 List<DbColumnInfo> dbColumnInfoList = db.DbMaintenance.GetColumnInfosByTableName(tableName);
-                 foreach(var dbColumnInfo in dbColumnInfoList){
-                     //Console.WriteLine(dbColumnInfo.DbColumnName);
-                     var columnName = dbColumnInfo.DbColumnName;
-                     var columnNameMapper = underline2Camel(columnName);        //字段名转换为小驼峰映射
-                     db.MappingColumns.Add(columnNameMapper, columnName, tableNameMapping);
-                 }
-             }
+            SqlSugarClient db = new SqlSugarClient(new ConnectionConfig()
+            {
+                ConnectionString = "datasource=F:/work/YouMingStudio/qay-lottery-choose357-analyse/sql/lottery-choose-analyse.sqlite3",
+                DbType = DbType.Sqlite,
+                IsAutoCloseConnection = true,
+                InitKeyType = InitKeyType.Attribute     //从实体特性中读取主键自增列信息
+            });
+
+            List <DbTableInfo> dbTableInfoList = db.DbMaintenance.GetTableInfoList(false);
+            foreach (var dbTableInfo in dbTableInfoList){
+                Console.WriteLine(dbTableInfo.Name);
+                var tableName = dbTableInfo.Name;
+                var tableNameMapping = underline2Camel(tableName,true);        //表名转换为大驼峰映射
+                db.MappingTables.Add(tableNameMapping, tableName);
+                List<DbColumnInfo> dbColumnInfoList = db.DbMaintenance.GetColumnInfosByTableName(tableName);
+                foreach(var dbColumnInfo in dbColumnInfoList){
+                    //Console.WriteLine(dbColumnInfo.DbColumnName);
+                    var columnName = dbColumnInfo.DbColumnName;
+                    var columnNameMapper = underline2Camel(columnName,true);        //字段名转换为小驼峰映射
+                    db.MappingColumns.Add(columnNameMapper, columnName, tableNameMapping);
+                }
+            }
 
             //db.MappingTables.Add("userInfo", "user_info");
             //db.MappingColumns.Add("parentId", "parent_id", "userInfo");
@@ -87,7 +97,8 @@ namespace SampleSqlSugar
             var path2 = Directory.GetCurrentDirectory();
             Console.WriteLine(path1 + " | " + path2);
             var pathEntity = path1 + "/Entity";
-            db.DbFirst.IsCreateAttribute().CreateClassFile(pathEntity,"SampleSqlSugar.Entity");
+            pathEntity = "F:/";
+            db.DbFirst.IsCreateAttribute().StringNullable().CreateClassFile(pathEntity,"SampleSqlSugar.Entity");
         }
 
         static string underline2Camel(string sourceStr,bool bigCamel=false){
